@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 				// get the flow from y, x position * 3 for better visibility
 				const Point2f flowatxy = flow.at<Point2f>(y, x) * 1;
 				// draw line at flow direction, *2 for viewability
-				line(nextOriginalC, Point(x, y), Point(cvRound(x + flowatxy.x*2), cvRound(y + flowatxy.y*2)), Scalar(255, 0, 0));
+				line(nextOriginalC, Point(x, y), Point(cvRound(x + flowatxy.x*10), cvRound(y + flowatxy.y*10)), Scalar(0, 255, 0));
 				// draw initial point
 				circle(nextOriginalC, Point(x, y), 1, Scalar(0, 0, 0), -1);
 			}

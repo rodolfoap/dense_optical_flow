@@ -1,5 +1,5 @@
 execute(){
-	./doflow PETS09-S2L1.mp4
+	./doflow KTH-Final-0TbZXdhqvA-640.mp4
 }
 build(){
 	[ -d build/ ] && {
