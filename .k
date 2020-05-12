@@ -1,1 +1,1 @@
-rm -rf build app app.dbg
+git clean -xdf
