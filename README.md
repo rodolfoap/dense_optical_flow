@@ -2,4 +2,4 @@
 
 Calculation of a dense optical flow matrix.
 
-![](running.mp4)
+![](running.gif)
