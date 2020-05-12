@@ -1,5 +1,5 @@
 execute(){
-	./app PETS09-S2L1.mp4
+	./doflow PETS09-S2L1.mp4
 }
 build(){
 	[ -d build/ ] && {
@@ -11,15 +11,15 @@ build(){
 	}
 	make -j8; STATUS=$?
 	popd &> /dev/null;
-	[ $STATUS == 0 ] && echo [100%] $(ls -l app) || echo [ERROR] Compilation error.
+	[ $STATUS == 0 ] && echo [100%] $(ls -l doflow) || echo [ERROR] Compilation error.
 }
 case "$1" in
 	"")
-		[ -f app ] || build;
+		[ -f doflow ] || build;
 		execute
 	;;
 	e)
-		vi -p app.cpp CMakeLists.txt
+		vi -p doflow.cpp CMakeLists.txt
 		build;
 		execute;
 	;;

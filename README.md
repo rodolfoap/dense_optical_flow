@@ -9,7 +9,6 @@ mkdir build && pushd !!
 cmake ..
 make
 popd
-
 ```
 
 # Usage
