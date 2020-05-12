@@ -1,12 +1,8 @@
 /* See https://stackoverflow.com/questions/43482959/simple-dense-optical-flow-program-calcopticalflowfarneback-opencv-3-2-cpp */
 #include <iostream>
-#include <opencv2/opencv.hpp> // Requires: apt install libopencv-dev python3-opencv
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/video/tracking.hpp>
 #include <vector>
 #include <stdio.h>
+#include <opencv2/opencv.hpp> // Requires: apt install libopencv-dev python3-opencv
 #define GRID_SIZE 20
 #define GENERATE_OUTPUT false
 using namespace std;

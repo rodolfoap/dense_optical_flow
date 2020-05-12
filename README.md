@@ -1,5 +1,23 @@
 # Dense Optical Flow
 
-Calculation of a dense optical flow matrix.
+Dense optical flow matrix using OpenCV's Gunnar Farneback’s algorithm.
+
+# Compilation
+
+```
+mkdir build && pushd !!
+cmake ..
+make
+popd
+
+```
+
+# Usage
+
+```
+./doflow VIDEO_FILE.mp4
+```
+
+# Output sample
 
 ![](running.gif)
