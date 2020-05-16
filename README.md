@@ -19,7 +19,11 @@ popd
 
 # Output sample
 
-![](running.gif)
+* ACCELERATION=0.1
+![](running_ac_0.1.gif)
+
+* ACCELERATION=0.9
+![](running_ac_0.9.gif)
 
 # Tools
 ```
