@@ -1,9 +1,5 @@
-#include <vector>
-#include <stdio.h>
 #include <opencv2/opencv.hpp> // Requires: apt install libopencv-dev python3-opencv
 #include "denseflow.h"
-#define GRID_SIZE 20
-#define AMPLIFICATION 1
 
 int main(int argc, char* argv[]) {
 	// DenseFlow dflow(0);

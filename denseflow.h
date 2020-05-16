@@ -1,18 +1,17 @@
-#include <vector>
-#include <stdio.h>
 #include <opencv2/opencv.hpp> // Requires: apt install libopencv-dev python3-opencv
 #define GRID_SIZE 20
-#define AMPLIFICATION 1
+#define AMPLIFICATION 10
 
 class DenseFlow {
 private:
-	cv::Mat flow, prev, next, colored;
+	cv::Mat state, flow, prev, next, colored;
 	cv::VideoCapture cap;
 	int channel;
 	std::string vidflow;
 	bool active=true, draw=false;
 	float fps;
 	cv::Size size;
+	int swidth, sheight;
 	void initialize();
 public:
 	DenseFlow(int c):   channel(c) { initialize(); }
