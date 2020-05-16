@@ -5,6 +5,7 @@ Dense optical flow matrix using OpenCV's Gunnar Farneback’s algorithm.
 # Compilation
 
 ```
+cd src
 mkdir build && pushd !!
 cmake ..
 make
@@ -14,16 +15,16 @@ popd
 # Usage
 
 ```
-./doflow VIDEO_FILE.mp4
+./main VIDEO_FILE.mp4
 ```
 
 # Output sample
 
 * ACCELERATION=0.1
-![](running_ac_0.1.gif)
+![](vid/running_ac_0.1.gif)
 
 * ACCELERATION=0.9
-![](running_ac_0.9.gif)
+![](vid/running_ac_0.9.gif)
 
 # Tools
 ```

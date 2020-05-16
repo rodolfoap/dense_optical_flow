@@ -1,5 +1,5 @@
 execute(){
-	./main KTH-Final-0TbZXdhqvA-640.mp4
+	./main ../vid/KTH-Final-0TbZXdhqvA-640.mp4
 }
 build(){
 	[ -d build/ ] && {
