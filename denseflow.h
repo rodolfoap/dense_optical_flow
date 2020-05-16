@@ -1,6 +1,8 @@
 #include <opencv2/opencv.hpp> // Requires: apt install libopencv-dev python3-opencv
 #define GRID_SIZE 20
-#define AMPLIFICATION 10
+#define AMPLIFICATION 20
+#define ACCELERATION 0.1f
+#define THRESHOLD 0.2f
 
 class DenseFlow {
 private:

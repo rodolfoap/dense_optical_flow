@@ -12,12 +12,10 @@ void DenseFlow::initialize() {
 	state=cv::Mat_<cv::Point>(sheight, swidth, cv::Point(0, 0));
 }
 void DenseFlow::drawVectors() {
-	for(int y=0; y<sheight; y+=1) {
-		for(int x=0; x<swidth; x+=1) {
-			const cv::Point2f flowatxy=state.at<cv::Point2f>(y, x);
-			line(colored, cv::Point(x*GRID_SIZE, y*GRID_SIZE), cv::Point(cvRound(x*GRID_SIZE + flowatxy.x*AMPLIFICATION), cvRound(y*GRID_SIZE + flowatxy.y*AMPLIFICATION)), cv::Scalar(0, 255, 0));
-			circle(colored, cv::Point(x*GRID_SIZE, y*GRID_SIZE), 1, cv::Scalar(0, 0, 0), -1);
-		}
+	for(int y=0; y<sheight; y+=1) for(int x=0; x<swidth; x+=1) {
+		const cv::Point2f flowatxy=state.at<cv::Point2f>(y, x);
+		line(colored, cv::Point(x*GRID_SIZE, y*GRID_SIZE), cv::Point(cvRound(x*GRID_SIZE + flowatxy.x*AMPLIFICATION), cvRound(y*GRID_SIZE + flowatxy.y*AMPLIFICATION)), cv::Scalar(0, 255, 0));
+		circle(colored, cv::Point(x*GRID_SIZE, y*GRID_SIZE), 1, cv::Scalar(0, 0, 0), -1);
 	}
 }
 void DenseFlow::calculateFlow() {
@@ -26,8 +24,13 @@ void DenseFlow::calculateFlow() {
 		next.copyTo(colored);
 		cvtColor(next, next, cv::COLOR_BGR2GRAY);
 		cv::calcOpticalFlowFarneback(prev, next, flow, 0.4, 1, GRID_SIZE, 2, 8, 1.2, 0);
-		// Delta-interpolate this!
-		for(int y=0; y<sheight; y+=1) for(int x=0; x<swidth; x+=1) state.at<cv::Point2f>(y, x)=flow.at<cv::Point2f>(y*GRID_SIZE, x*GRID_SIZE) * 1;
+		// Delta-interpolation
+		for(int y=0; y<sheight; y+=1) for(int x=0; x<swidth; x+=1) {
+			const cv::Point2f old=state.at<cv::Point2f>(y, x);
+			cv::Point2f neu=flow.at<cv::Point2f>(y*GRID_SIZE, x*GRID_SIZE) * 1;
+			if(cv::norm(neu)<THRESHOLD) { neu.x=0; neu.y=0; }
+			state.at<cv::Point2f>(y, x)=old*(1.-ACCELERATION)+neu*ACCELERATION;
+		}
 		if(draw) drawVectors();
 		next.copyTo(prev);
 	}
