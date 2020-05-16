@@ -6,7 +6,7 @@
 
 class ChangeDetector{
 private:
-	cv::Mat flow, prev, next, nextOriginal, colored;
+	cv::Mat flow, prev, next, colored;
 	cv::VideoCapture cap;
 	int channel=-1;
 	std::string vidflow;
@@ -15,7 +15,6 @@ private:
 	cv::Size size;
 	void initialize(){
 		if(channel>=0) cap.open(channel); else cap.open(vidflow);
-		cv::namedWindow("OpticalFlow", cv::WINDOW_AUTOSIZE);
 		cap >> prev;
 		cvtColor(prev, prev, cv::COLOR_BGR2GRAY);
 		fps=cap.get(cv::CAP_PROP_FPS);
@@ -29,7 +28,6 @@ public:
 		if(next.empty()) { cap.release(); active=false; } else {
 			next.copyTo(colored);
 			cvtColor(next, next, cv::COLOR_BGR2GRAY);
-			next.copyTo(nextOriginal);
 			cv::calcOpticalFlowFarneback(prev, next, flow, 0.4, 1, 12, 2, 8, 1.2, 0);
 			for(int y=0; y<next.rows; y+=GRID_SIZE) {
 				for(int x=0; x<next.cols; x+=GRID_SIZE) {
@@ -38,7 +36,7 @@ public:
 					circle(colored, cv::Point(x, y), 1, cv::Scalar(0, 0, 0), -1);
 				}
 			}
-			nextOriginal.copyTo(prev);
+			next.copyTo(prev);
 			imshow("OpticalFlow", colored);
 		}
 	}
@@ -46,13 +44,15 @@ public:
 	bool isActive()     { return active; }
 	cv::Size getSize()  { return size; }
 	cv::Mat  getImage() { return colored; }
+	cv::VideoCapture& getVideoCapture() { return cap; }
 };
 
 int main(int argc, char* argv[]) {
-	cv::VideoWriter writer;
+	cv::namedWindow("OpticalFlow", cv::WINDOW_AUTOSIZE);
 	ChangeDetector cd(0); // cd(std::string(argv[1]));
 
 	// Video generation: uncomment writers
+	// cv::VideoWriter writer;
 	// writer.open("output.avi", CV_FOURCC('M', 'J', 'P', 'G'), cd.getFPS(), cd.getSize());
 
 	while(cv::waitKey(1)!=113 && cd.isActive()) {
