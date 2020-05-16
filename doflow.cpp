@@ -8,7 +8,7 @@ class DenseFlow {
 private:
 	cv::Mat flow, prev, next, colored;
 	cv::VideoCapture cap;
-	int channel=-1;
+	int channel;
 	std::string vidflow;
 	bool active=true, draw=false;
 	float fps;
@@ -22,8 +22,8 @@ private:
 		size=cv::Size((int)cap.get(cv::CAP_PROP_FRAME_WIDTH), (int)cap.get(cv::CAP_PROP_FRAME_HEIGHT));
 	}
 public:
-	DenseFlow(std::string f): vidflow(f) { initialize(); }
-	DenseFlow(int c): channel(c)         { initialize(); }
+	DenseFlow(int c):   channel(c) { initialize(); }
+	DenseFlow(char* f): channel(-1), vidflow(f) { initialize(); }
 	void drawVectors() {
 		for(int y=0; y<next.rows; y+=GRID_SIZE) {
 			for(int x=0; x<next.cols; x+=GRID_SIZE) {
@@ -53,7 +53,8 @@ public:
 };
 
 int main(int argc, char* argv[]) {
-	DenseFlow dflow(0); // dflow(std::string(argv[1]));
+	// DenseFlow dflow(0);
+	DenseFlow dflow(argv[1]);
 
 	// Vectors drawing
 	cv::namedWindow("OpticalFlow", cv::WINDOW_AUTOSIZE);
