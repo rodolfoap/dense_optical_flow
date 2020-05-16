@@ -1,4 +1,5 @@
 output.avi
-doflow
+main
 build
 *.cpp.tu*
+libdenseflow.*
