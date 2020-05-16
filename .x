@@ -11,7 +11,10 @@ build(){
 	}
 	make -j8; STATUS=$?
 	popd &> /dev/null;
-	[ $STATUS == 0 ] && echo [100%] $(ls -l doflow) || echo [ERROR] Compilation error.
+	[ $STATUS == 0 ] && echo [100%] $(ls -l doflow) || {
+		echo [ERROR] Compilation error.
+		rm -f ./doflow
+	}
 }
 case "$1" in
 	"")
