@@ -6,20 +6,28 @@
 
 class DenseFlow {
 private:
+	bool active=true, draw=false;
 	cv::Mat state, flow, prev, next, colored;
 	cv::VideoCapture cap;
 	int channel;
 	std::string vidflow;
-	bool active=true, draw=false;
 	float fps;
 	cv::Size size;
 	int swidth, sheight;
 	void initialize();
+
 public:
+	// Alternative constructors, allowing video files, streams or the local webcam
 	DenseFlow(int c):   channel(c) { initialize(); }
 	DenseFlow(char* f): channel(-1), vidflow(f) { initialize(); }
+
+	// Not always, vectors are drawn over the original image
 	void drawVectors();
+
+	// Main calculating function
 	void calculateFlow();
+
+	// Getters & setters
 	float getFPS()      { return fps; }
 	bool isActive()     { return active; }
 	cv::Size getSize()  { return size; }

@@ -7,10 +7,13 @@ void DenseFlow::initialize() {
 	cvtColor(prev, prev, cv::COLOR_BGR2GRAY);
 	fps=cap.get(cv::CAP_PROP_FPS);
 	size=cv::Size((int)cap.get(cv::CAP_PROP_FRAME_WIDTH), (int)cap.get(cv::CAP_PROP_FRAME_HEIGHT));
+	// The state matrix size is evidently different.
 	swidth=prev.cols/GRID_SIZE;
 	sheight=prev.rows/GRID_SIZE;
 	state=cv::Mat_<cv::Point>(sheight, swidth, cv::Point(0, 0));
 }
+
+// Renders visual vectors over the frame
 void DenseFlow::drawVectors() {
 	for(int y=0; y<sheight; y+=1) for(int x=0; x<swidth; x+=1) {
 		const cv::Point2f flowatxy=state.at<cv::Point2f>(y, x);
@@ -18,6 +21,10 @@ void DenseFlow::drawVectors() {
 		circle(colored, cv::Point(x*GRID_SIZE, y*GRID_SIZE), 1, cv::Scalar(0, 0, 0), -1);
 	}
 }
+
+// Calculate farneback and smooth result
+// Slow changing vectors might prevent detecting short but fast movements
+// Fast changing vectors will generate a lot of noise
 void DenseFlow::calculateFlow() {
 	cap >> next;
 	if(next.empty()) { cap.release(); active=false; } else {
@@ -26,10 +33,11 @@ void DenseFlow::calculateFlow() {
 		cv::calcOpticalFlowFarneback(prev, next, flow, 0.4, 1, GRID_SIZE, 2, 8, 1.2, 0);
 		// Delta-interpolation
 		for(int y=0; y<sheight; y+=1) for(int x=0; x<swidth; x+=1) {
-			const cv::Point2f old=state.at<cv::Point2f>(y, x);
 			cv::Point2f neu=flow.at<cv::Point2f>(y*GRID_SIZE, x*GRID_SIZE) * 1;
+			// A threshold is required in order to prevent small pixel color variations to be detected as movements
 			if(cv::norm(neu)<THRESHOLD) { neu.x=0; neu.y=0; }
-			state.at<cv::Point2f>(y, x)=old*(1.-ACCELERATION)+neu*ACCELERATION;
+			// Move it slowly
+			state.at<cv::Point2f>(y, x)=(state.at<cv::Point2f>(y, x))*(1.-ACCELERATION)+neu*ACCELERATION;
 		}
 		if(draw) drawVectors();
 		next.copyTo(prev);
